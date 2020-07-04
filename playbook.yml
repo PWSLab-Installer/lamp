@@ -1,0 +1,8 @@
+- hosts: localhost
+  connection: local
+
+  # Roles are imported from ansible
+  roles:
+    - role: apache
+    - role: mysql
+    - role: php
