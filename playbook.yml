@@ -15,6 +15,9 @@
     - name: Install Role PHP
       local_action: command ansible-galaxy install -f geerlingguy.php
 
+    - name: Install Role PHP-VERSIONS
+      local_action: command ansible-galaxy install -f geerlingguy.php-versions
+
     - name: Check if Apache is already installed
       stat: path=/usr/sbin/httpd
       register: apache_exists
@@ -34,6 +37,11 @@
 
     - name: Applying role PHP
       command: mv ~/.ansible/roles/geerlingguy.php ~/.ansible/roles/pwslab.php
+      when: not php_exists.stat.exists
+      ignore_errors: yes
+
+    - name: Applying role PHP
+      command: mv ~/.ansible/roles/geerlingguy.php-versions ~/.ansible/roles/pwslab.php-versions
       when: not php_exists.stat.exists
       ignore_errors: yes
 
@@ -81,6 +89,11 @@
           name: pwslab.mysql
       when: not mysql_exists.stat.exists
 
+    - name: Installing PHP-Versions
+      include_role:
+          name: pwslab.php-versions
+      when: not php_exists.stat.exists
+    
     - name: Installing PHP
       include_role:
           name: pwslab.php
