@@ -40,7 +40,7 @@
       when: not php_exists.stat.exists
       ignore_errors: yes
 
-    - name: Applying role PHP
+    - name: Applying role PHP-Versions
       command: mv ~/.ansible/roles/geerlingguy.php-versions ~/.ansible/roles/pwslab.php-versions
       when: not php_exists.stat.exists
       ignore_errors: yes
@@ -92,7 +92,9 @@
     - name: Installing PHP-Versions
       include_role:
           name: pwslab.php-versions
-      when: not php_exists.stat.exists
+      when: 
+        - not php_exists.stat.exists
+        - not cent_os.stdout | regex_search("CentOS Linux release 8")
     
     - name: Installing PHP
       include_role:
